@@ -137,7 +137,7 @@
         </header>
 
         <!-- STATS BANNER -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
             <div class="glass-card p-4 rounded-2xl flex items-center gap-3 border-l-4 border-emerald-400">
                 <div class="p-3 rounded-xl bg-emerald-500/20 text-emerald-400"><i class="fa-solid fa-circle-check text-xl"></i></div>
                 <div>
@@ -152,6 +152,13 @@
                     <div class="text-2xl font-black text-white" id="stat-postwork">0</div>
                 </div>
             </div>
+            <div class="glass-card p-4 rounded-2xl flex items-center gap-3 border-l-4 border-purple-400">
+                <div class="p-3 rounded-xl bg-purple-500/20 text-purple-400"><i class="fa-solid fa-stopwatch text-xl"></i></div>
+                <div>
+                    <div class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Total Time</div>
+                    <div class="text-2xl font-black text-white"><span id="stat-time">0</span> <span class="text-xs font-normal text-slate-400">mins</span></div>
+                </div>
+            </div>
             <div class="glass-card p-4 rounded-2xl flex items-center gap-3 border-l-4 border-pink-400">
                 <div class="p-3 rounded-xl bg-pink-500/20 text-pink-400"><i class="fa-solid fa-bullseye text-xl"></i></div>
                 <div>
@@ -159,7 +166,7 @@
                     <div class="text-2xl font-black text-white" id="stat-goals">0</div>
                 </div>
             </div>
-            <div class="glass-card p-4 rounded-2xl flex items-center gap-3 border-l-4 border-cyan-400">
+            <div class="glass-card p-4 rounded-2xl flex items-center gap-3 border-l-4 border-cyan-400 col-span-2 md:col-span-1">
                 <div class="p-3 rounded-xl bg-cyan-500/20 text-cyan-400"><i class="fa-solid fa-calendar-day text-xl"></i></div>
                 <div>
                     <div class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Appointments</div>
@@ -190,8 +197,22 @@
 
                     <form id="quick-task-form" class="space-y-3">
                         <div>
-                            <input type="text" id="quick-task-input" required placeholder="e.g., Call Doctor, Review Career Goal..."
+                            <input type="text" id="quick-task-input" required placeholder="e.g., Wash dishes, Review Career Goal..."
                                 class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
+                        </div>
+
+                        <!-- Date & Duration Grid -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <select id="quick-task-date" class="bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-amber-400">
+                                <option value="today">📅 For Today</option>
+                                <option value="tomorrow">☀️ For Tomorrow</option>
+                            </select>
+
+                            <div class="relative">
+                                <input type="number" id="quick-task-duration" min="1" value="15" placeholder="Mins"
+                                    class="w-full bg-slate-900/90 border border-slate-700 rounded-xl pl-3 pr-10 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400">
+                                <span class="absolute right-3 top-2 text-[10px] text-slate-500 font-bold">mins</span>
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-2">
@@ -272,14 +293,14 @@
             <!-- RIGHT COLUMN: DASHBOARD TABS (TASKS, CAREER GOALS, EVENING REVIEW) (8 cols) -->
             <div class="lg:col-span-8 space-y-6">
 
-                <!-- CATEGORY TABS & COLOR PALETTE BAR -->
+                <!-- CATEGORY TABS & SCHEDULE TABS -->
                 <div class="glass-panel p-2.5 rounded-2xl flex flex-wrap gap-2 items-center justify-between border-t border-slate-700">
                     <div class="flex flex-wrap gap-1.5" id="category-filter-tabs">
-                        <button data-filter="all" class="tab-btn active px-3.5 py-1.5 rounded-xl text-xs font-bold bg-purple-600 text-white transition shadow-md">All Tasks</button>
+                        <button data-filter="today" class="tab-btn active px-3.5 py-1.5 rounded-xl text-xs font-bold bg-purple-600 text-white transition shadow-md">Today's Tasks</button>
+                        <button data-filter="tomorrow" class="tab-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">☀️ Tomorrow</button>
+                        <button data-filter="all" class="tab-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">All Schedule</button>
                         <button data-filter="postwork" class="tab-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">🌙 Post-Work</button>
                         <button data-filter="work" class="tab-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">💼 Work</button>
-                        <button data-filter="urgent" class="tab-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">🔴 Urgent/Appts</button>
-                        <button data-filter="chores" class="tab-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">🏡 Chores</button>
                     </div>
 
                     <button id="clear-completed-btn" class="text-xs text-slate-400 hover:text-pink-400 px-3 py-1.5 transition flex items-center gap-1 font-semibold">
@@ -324,7 +345,7 @@
                 <div class="glass-panel rounded-3xl p-6 border-t-4 border-purple-500 shadow-xl">
                     <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
                         <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-purple-400"></i> Active Tasks & Daily Queue
+                            <i class="fa-solid fa-list-check text-purple-400"></i> Active Tasks & Schedule
                         </h2>
                         <div class="flex items-center gap-2">
                             <button id="print-daily-btn" class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-purple-500/20 transition">
@@ -347,16 +368,13 @@
         </div>
     </div>
 
-    <!-- HIDDEN PRINT CONTAINER (POPULATED DYNAMICALLY FOR PRINT MODE) -->
-    <div id="printable-area" class="hidden">
-        <!-- Dynamically rendered printable document -->
-    </div>
+    <!-- HIDDEN PRINT CONTAINER -->
+    <div id="printable-area" class="hidden"></div>
 
-    <!-- MODAL 1: 100% FREE HOSTING & PWA INSTRUCTIONS -->
+    <!-- MODAL 1: 100% FREE HOSTING GUIDE -->
     <div id="guide-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
         <div class="glass-panel border border-emerald-500/30 bg-slate-900 rounded-3xl max-w-2xl w-full p-6 space-y-5 max-h-[90vh] overflow-y-auto custom-scrollbar relative">
             <button id="close-guide-btn" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-
             <div class="flex items-center gap-3">
                 <span class="p-3 rounded-2xl bg-emerald-500/20 text-emerald-400"><i class="fa-solid fa-cloud-arrow-up text-2xl"></i></span>
                 <div>
@@ -364,47 +382,7 @@
                     <p class="text-xs text-slate-400">Deploy this exact app online in under 5 minutes without spending a dime.</p>
                 </div>
             </div>
-
-            <div class="space-y-4 text-xs text-slate-300">
-                
-                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
-                    <h4 class="font-bold text-emerald-400 flex items-center gap-2 text-sm">
-                        <i class="fa-brands fa-github"></i> Option 1: GitHub Pages (Recommended)
-                    </h4>
-                    <ol class="list-decimal list-inside space-y-1.5 text-slate-300 pl-2">
-                        <li>Create a free account on <a href="https://github.com" target="_blank" class="text-cyan-400 underline">GitHub.com</a>.</li>
-                        <li>Create a new repository named <strong>my-planner</strong>.</li>
-                        <li>Upload this <code class="bg-slate-900 px-1 py-0.5 rounded text-pink-300">index.html</code> file directly.</li>
-                        <li>Go to <strong>Settings > Pages</strong>, select <strong>main branch</strong>, and click <strong>Save</strong>.</li>
-                        <li>Your app is now live worldwide at <code class="text-emerald-300">https://yourusername.github.io/my-planner</code>!</li>
-                    </ol>
-                </div>
-
-                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
-                    <h4 class="font-bold text-cyan-400 flex items-center gap-2 text-sm">
-                        <i class="fa-solid fa-mobile-screen-button"></i> Add Shortcut to Android & Mobile Screen
-                    </h4>
-                    <ol class="list-decimal list-inside space-y-1.5 text-slate-300 pl-2">
-                        <li>Open your hosted website link on your Android phone's Google Chrome app.</li>
-                        <li>Tap the <strong>3 dots menu</strong> at the top right of Chrome.</li>
-                        <li>Select <strong>"Add to Home screen"</strong> or <strong>"Install App"</strong>.</li>
-                        <li>Your planner will now run like a native mobile app straight from your home screen!</li>
-                    </ol>
-                </div>
-
-                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
-                    <h4 class="font-bold text-purple-400 flex items-center gap-2 text-sm">
-                        <i class="fa-brands fa-alexa"></i> Alexa Voice Reminders Integration
-                    </h4>
-                    <p class="text-slate-400">
-                        Enable the free **Any.do** or **Todoist** Alexa skill on your Amazon Alexa App. Any voice command to Alexa automatically updates your linked task lists across all platforms!
-                    </p>
-                </div>
-            </div>
-
-            <button id="close-guide-btn-bottom" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 rounded-xl text-xs transition">
-                Got it, let's plan!
-            </button>
+            <button id="close-guide-btn-bottom" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 rounded-xl text-xs transition">Got it!</button>
         </div>
     </div>
 
@@ -412,35 +390,10 @@
     <div id="colors-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
         <div class="glass-panel border border-pink-500/30 bg-slate-900 rounded-3xl max-w-md w-full p-6 space-y-5 relative">
             <button id="close-colors-btn" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-
             <div class="flex items-center gap-3">
                 <span class="p-3 rounded-2xl bg-pink-500/20 text-pink-400"><i class="fa-solid fa-palette text-xl"></i></span>
                 <div>
                     <h3 class="text-lg font-bold text-white">Category Colors Legend</h3>
-                    <p class="text-xs text-slate-400">Vivid visual hierarchy for instant glanceability</p>
-                </div>
-            </div>
-
-            <div class="space-y-3 text-xs">
-                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
-                    <span class="flex items-center gap-2 font-semibold"><span class="w-3 h-3 rounded-full bg-amber-400"></span> 🌙 Post-Work / Evening</span>
-                    <span class="badge-amber px-2 py-0.5 rounded-full text-[10px]">Amber Gold</span>
-                </div>
-                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
-                    <span class="flex items-center gap-2 font-semibold"><span class="w-3 h-3 rounded-full bg-pink-400"></span> 🎯 Career Goals</span>
-                    <span class="badge-pink px-2 py-0.5 rounded-full text-[10px]">Neon Pink</span>
-                </div>
-                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
-                    <span class="flex items-center gap-2 font-semibold"><span class="w-3 h-3 rounded-full bg-rose-500"></span> 🔴 High Priority / Appts</span>
-                    <span class="badge-crimson px-2 py-0.5 rounded-full text-[10px]">Crimson Red</span>
-                </div>
-                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
-                    <span class="flex items-center gap-2 font-semibold"><span class="w-3 h-3 rounded-full bg-cyan-400"></span> 💼 Work Tasks</span>
-                    <span class="badge-cyan px-2 py-0.5 rounded-full text-[10px]">Bright Cyan</span>
-                </div>
-                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
-                    <span class="flex items-center gap-2 font-semibold"><span class="w-3 h-3 rounded-full bg-emerald-400"></span> 🏡 Personal & Chores</span>
-                    <span class="badge-emerald px-2 py-0.5 rounded-full text-[10px]">Emerald Green</span>
                 </div>
             </div>
         </div>
@@ -457,50 +410,38 @@
 
     <!-- APPLICATION JAVASCRIPT LOGIC -->
     <script>
-        // State Initialization
-        let tasks = JSON.parse(localStorage.getItem('planner_tasks_v2')) || [
-            { id: 1, title: 'Review career certification notes', category: 'career', completed: false, createdAt: new Date() },
-            { id: 2, title: 'Call Doctor for routine checkup slot', category: 'urgent', completed: false, createdAt: new Date() },
-            { id: 3, title: 'Pick up post-work packages from locker', category: 'postwork', completed: true, createdAt: new Date() }
+        function getFormattedDate(offsetDays = 0) {
+            const d = new Date();
+            d.setDate(d.getDate() + offsetDays);
+            return d.toISOString().split('T')[0];
+        }
+
+        let tasks = JSON.parse(localStorage.getItem('planner_tasks_v3')) || [
+            { id: 1, title: 'Wash dishes & kitchen counters', category: 'chores', date: getFormattedDate(0), duration: 15, completed: false },
+            { id: 2, title: 'Review career certification notes', category: 'career', date: getFormattedDate(0), duration: 30, completed: false },
+            { id: 3, title: 'Prepare post-work schedule', category: 'postwork', date: getFormattedDate(1), duration: 20, completed: false }
         ];
 
-        let appointments = JSON.parse(localStorage.getItem('planner_appointments_v2')) || [
-            { id: 1, title: 'Dr. Smith Wellness Checkup', time: new Date(Date.now() + 3600000 * 2).toISOString().slice(0, 16), alertMinutes: 60, alerted: false }
-        ];
-
-        let careerGoals = JSON.parse(localStorage.getItem('planner_career_goals_v2')) || [
-            {
-                id: 1,
-                title: 'Professional Skill Advancement',
-                subtasks: [
-                    { id: 101, text: 'Complete online course modules', done: true },
-                    { id: 102, text: 'Build capstone portfolio project', done: false },
-                    { id: 103, text: 'Submit certification application', done: false }
-                ]
-            }
-        ];
-
-        let activeFilter = 'all';
+        let appointments = JSON.parse(localStorage.getItem('planner_appointments_v3')) || [];
+        let careerGoals = JSON.parse(localStorage.getItem('planner_career_goals_v3')) || [];
+        let activeFilter = 'today';
         const jsConfetti = new JSConfetti();
 
-        // Play Completion Sound Effect using Tone.js synthesizer
         function playSuccessSound() {
             try {
                 const synth = new Tone.Synth().toDestination();
                 synth.triggerAttackRelease("C5", "8n");
                 setTimeout(() => synth.triggerAttackRelease("G5", "8n"), 100);
-            } catch(e) { /* Audio Context fallback */ }
+            } catch(e) {}
         }
 
-        // Save data helper
         function saveData() {
-            localStorage.setItem('planner_tasks_v2', JSON.stringify(tasks));
-            localStorage.setItem('planner_appointments_v2', JSON.stringify(appointments));
-            localStorage.setItem('planner_career_goals_v2', JSON.stringify(careerGoals));
+            localStorage.setItem('planner_tasks_v3', JSON.stringify(tasks));
+            localStorage.setItem('planner_appointments_v3', JSON.stringify(appointments));
+            localStorage.setItem('planner_career_goals_v3', JSON.stringify(careerGoals));
             updateStats();
         }
 
-        // Initialize UI
         document.addEventListener('DOMContentLoaded', () => {
             renderDate();
             renderTasks();
@@ -508,51 +449,58 @@
             renderCareerGoals();
             updateStats();
             setupVoiceRecognition();
-            startAppointmentCheckInterval();
             setupModals();
             setupPrintHandlers();
         });
 
-        // Display current date
         function renderDate() {
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('current-date-display').innerText = new Date().toLocaleDateString('en-US', options);
         }
 
-        // Update Header Stats
         function updateStats() {
-            const completedCount = tasks.filter(t => t.completed).length;
+            const todayStr = getFormattedDate(0);
+            const completedCount = tasks.filter(t => t.completed && t.date === todayStr).length;
             const postworkCount = tasks.filter(t => t.category === 'postwork' && !t.completed).length;
             const goalsCount = careerGoals.length;
             const apptsCount = appointments.length;
 
+            let totalMins = 0;
+            tasks.filter(t => t.date === todayStr && !t.completed).forEach(t => totalMins += parseInt(t.duration || 0));
+
             document.getElementById('stat-completed').innerText = completedCount;
             document.getElementById('stat-postwork').innerText = postworkCount;
+            document.getElementById('stat-time').innerText = totalMins;
             document.getElementById('stat-goals').innerText = goalsCount;
             document.getElementById('stat-appts').innerText = apptsCount;
         }
 
-        // --- TASK MANAGEMENT ---
         const quickTaskForm = document.getElementById('quick-task-form');
         quickTaskForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const input = document.getElementById('quick-task-input');
+            const dateChoice = document.getElementById('quick-task-date').value;
+            const duration = parseInt(document.getElementById('quick-task-duration').value) || 15;
             const category = document.getElementById('quick-task-category').value;
 
             if (!input.value.trim()) return;
+
+            const targetDate = dateChoice === 'tomorrow' ? getFormattedDate(1) : getFormattedDate(0);
 
             tasks.unshift({
                 id: Date.now(),
                 title: input.value.trim(),
                 category: category,
-                completed: false,
-                createdAt: new Date()
+                date: targetDate,
+                duration: duration,
+                completed: false
             });
 
             input.value = '';
+            document.getElementById('quick-task-duration').value = "15";
             saveData();
             renderTasks();
-            showToast('Task Saved!', 'Added to your colorful queue.');
+            showToast('Task Scheduled!', `Added for ${dateChoice === 'tomorrow' ? 'tomorrow' : 'today'} (${duration} mins)`);
         });
 
         function toggleTask(id) {
@@ -561,11 +509,7 @@
                     const nextCompleted = !t.completed;
                     if (nextCompleted) {
                         playSuccessSound();
-                        jsConfetti.addConfetti({
-                            emojis: ['🎉', '✨', '⚡', '🏆', '💎'],
-                            emojiSize: 30,
-                            confettiNumber: 30,
-                        });
+                        jsConfetti.addConfetti({ emojis: ['🎉', '✨', '⚡'], emojiSize: 30, confettiNumber: 30 });
                     }
                     return { ...t, completed: nextCompleted };
                 }
@@ -581,15 +525,17 @@
             renderTasks();
         }
 
-        // Render Filtered Tasks
         function renderTasks() {
             const container = document.getElementById('tasks-container');
             const badge = document.getElementById('task-count-badge');
             
+            const todayStr = getFormattedDate(0);
+            const tomorrowStr = getFormattedDate(1);
+
             let filtered = tasks;
-            if (activeFilter !== 'all') {
-                filtered = tasks.filter(t => t.category === activeFilter);
-            }
+            if (activeFilter === 'today') filtered = tasks.filter(t => t.date === todayStr);
+            else if (activeFilter === 'tomorrow') filtered = tasks.filter(t => t.date === tomorrowStr);
+            else if (activeFilter !== 'all') filtered = tasks.filter(t => t.category === activeFilter);
 
             badge.innerText = `${filtered.length} Tasks`;
 
@@ -597,7 +543,7 @@
                 container.innerHTML = `
                     <div class="text-center py-10 text-slate-500">
                         <i class="fa-solid fa-wand-magic-sparkles text-3xl mb-2 opacity-50 text-purple-400"></i>
-                        <p class="text-xs">No tasks found in this section. Add one above!</p>
+                        <p class="text-xs">No tasks scheduled here. Add one above!</p>
                     </div>
                 `;
                 return;
@@ -605,13 +551,21 @@
 
             container.innerHTML = filtered.map(t => {
                 const categoryBadge = getCategoryTag(t.category);
+                const isTomorrow = t.date === tomorrowStr;
+
                 return `
                     <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between gap-3 ${t.completed ? 'opacity-50 bg-slate-950/40' : ''}">
                         <div class="flex items-center gap-3 flex-grow">
                             <button onclick="toggleTask(${t.id})" class="w-6 h-6 rounded-lg border ${t.completed ? 'bg-emerald-500 border-emerald-400 text-slate-950' : 'border-slate-600 hover:border-purple-400'} flex items-center justify-center transition">
                                 ${t.completed ? '<i class="fa-solid fa-check text-xs font-bold"></i>' : ''}
                             </button>
-                            <span class="text-sm font-medium text-slate-200 ${t.completed ? 'line-through text-slate-500' : ''}">${escapeHtml(t.title)}</span>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium text-slate-200 ${t.completed ? 'line-through text-slate-500' : ''}">${escapeHtml(t.title)}</span>
+                                <span class="text-[10px] text-slate-400 font-semibold flex items-center gap-2 mt-0.5">
+                                    <span>⏱️ ${t.duration} mins</span>
+                                    <span>📅 ${isTomorrow ? 'Tomorrow' : 'Today'}</span>
+                                </span>
+                            </div>
                         </div>
                         <div class="flex items-center gap-2">
                             ${categoryBadge}
@@ -626,22 +580,14 @@
 
         function getCategoryTag(category) {
             switch (category) {
-                case 'postwork':
-                    return `<span class="badge-amber text-[10px] px-2.5 py-0.5 rounded-full font-bold">🌙 Post-Work</span>`;
-                case 'work':
-                    return `<span class="badge-cyan text-[10px] px-2.5 py-0.5 rounded-full font-bold">💼 Work</span>`;
-                case 'chores':
-                    return `<span class="badge-emerald text-[10px] px-2.5 py-0.5 rounded-full font-bold">🏡 Chores</span>`;
-                case 'urgent':
-                    return `<span class="badge-crimson text-[10px] px-2.5 py-0.5 rounded-full font-bold">🔴 Urgent/Appt</span>`;
-                case 'career':
-                    return `<span class="badge-pink text-[10px] px-2.5 py-0.5 rounded-full font-bold">🎯 Career</span>`;
-                default:
-                    return `<span class="badge-purple text-[10px] px-2.5 py-0.5 rounded-full font-bold">General</span>`;
+                case 'postwork': return `<span class="badge-amber text-[10px] px-2.5 py-0.5 rounded-full font-bold">🌙 Post-Work</span>`;
+                case 'work': return `<span class="badge-cyan text-[10px] px-2.5 py-0.5 rounded-full font-bold">💼 Work</span>`;
+                case 'chores': return `<span class="badge-emerald text-[10px] px-2.5 py-0.5 rounded-full font-bold">🏡 Chores</span>`;
+                case 'urgent': return `<span class="badge-crimson text-[10px] px-2.5 py-0.5 rounded-full font-bold">🔴 Urgent</span>`;
+                default: return `<span class="badge-purple text-[10px] px-2.5 py-0.5 rounded-full font-bold font-mono">General</span>`;
             }
         }
 
-        // Category Filter Tabs
         document.getElementById('category-filter-tabs').addEventListener('click', (e) => {
             if (e.target.classList.contains('tab-btn')) {
                 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -663,7 +609,6 @@
             showToast('Cleared!', 'Completed items removed.');
         });
 
-        // --- APPOINTMENTS SCHEDULER ---
         const apptForm = document.getElementById('appointment-form');
         apptForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -673,19 +618,12 @@
 
             if (!title || !time) return;
 
-            appointments.push({
-                id: Date.now(),
-                title: title.trim(),
-                time: time,
-                alertMinutes: alertMinutes,
-                alerted: false
-            });
-
+            appointments.push({ id: Date.now(), title: title.trim(), time: time, alertMinutes: alertMinutes, alerted: false });
             document.getElementById('appt-title').value = '';
             document.getElementById('appt-time').value = '';
             saveData();
             renderAppointments();
-            showToast('Scheduled!', 'Appointment notification armed.');
+            showToast('Scheduled!', 'Appointment notification set.');
         });
 
         function renderAppointments() {
@@ -695,22 +633,15 @@
                 return;
             }
 
-            container.innerHTML = appointments.map(a => {
-                const apptDate = new Date(a.time);
-                const formattedTime = apptDate.toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-                
-                return `
-                    <div class="glass-card p-3 rounded-xl flex items-center justify-between text-xs border-l-2 border-cyan-400">
-                        <div>
-                            <div class="font-bold text-cyan-200">${escapeHtml(a.title)}</div>
-                            <div class="text-slate-400 text-[11px]"><i class="fa-regular fa-clock text-cyan-400"></i> ${formattedTime}</div>
-                        </div>
-                        <button onclick="deleteAppointment(${a.id})" class="text-slate-500 hover:text-pink-400">
-                            <i class="fa-solid fa-trash text-xs"></i>
-                        </button>
+            container.innerHTML = appointments.map(a => `
+                <div class="glass-card p-3 rounded-xl flex items-center justify-between text-xs border-l-2 border-cyan-400">
+                    <div>
+                        <div class="font-bold text-cyan-200">${escapeHtml(a.title)}</div>
+                        <div class="text-slate-400 text-[11px]"><i class="fa-regular fa-clock text-cyan-400"></i> ${new Date(a.time).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
                     </div>
-                `;
-            }).join('');
+                    <button onclick="deleteAppointment(${a.id})" class="text-slate-500 hover:text-pink-400"><i class="fa-solid fa-trash text-xs"></i></button>
+                </div>
+            `).join('');
         }
 
         function deleteAppointment(id) {
@@ -719,32 +650,10 @@
             renderAppointments();
         }
 
-        // Check appointment timers
-        function startAppointmentCheckInterval() {
-            setInterval(() => {
-                const now = new Date().getTime();
-                appointments.forEach(a => {
-                    const apptTime = new Date(a.time).getTime();
-                    const alertTime = apptTime - (a.alertMinutes * 60 * 1000);
-
-                    if (now >= alertTime && now < apptTime && !a.alerted) {
-                        a.alerted = true;
-                        saveData();
-                        playSuccessSound();
-                        showToast(`REMINDER ALERT!`, `${a.title} starts soon (${new Date(a.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})})`);
-                    }
-                });
-            }, 8000);
-        }
-
-        // --- CAREER GOALS TRACKER ---
         const addGoalBtn = document.getElementById('add-goal-toggle-btn');
         const goalForm = document.getElementById('new-goal-form');
 
-        addGoalBtn.addEventListener('click', () => {
-            goalForm.classList.toggle('hidden');
-        });
-
+        addGoalBtn.addEventListener('click', () => goalForm.classList.toggle('hidden'));
         goalForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const title = document.getElementById('goal-title').value.trim();
@@ -752,30 +661,19 @@
 
             if (!title) return;
 
-            const subtasks = subtasksRaw ? subtasksRaw.split(',').map((s, idx) => ({
-                id: Date.now() + idx,
-                text: s.trim(),
-                done: false
-            })) : [];
-
-            careerGoals.push({
-                id: Date.now(),
-                title: title,
-                subtasks: subtasks
-            });
-
+            const subtasks = subtasksRaw ? subtasksRaw.split(',').map((s, idx) => ({ id: Date.now() + idx, text: s.trim(), done: false })) : [];
+            careerGoals.push({ id: Date.now(), title: title, subtasks: subtasks });
             document.getElementById('goal-title').value = '';
             document.getElementById('goal-subtasks-input').value = '';
             goalForm.classList.add('hidden');
             saveData();
             renderCareerGoals();
-            showToast('Goal Created!', 'Added to career development roadmap.');
         });
 
         function renderCareerGoals() {
             const container = document.getElementById('career-goals-container');
             if (careerGoals.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 col-span-2">No career goals created yet. Add one above!</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 col-span-2">No career goals created yet.</p>`;
                 return;
             }
 
@@ -788,12 +686,8 @@
                     <div class="glass-card p-4 rounded-2xl border-l-4 border-pink-400 space-y-3">
                         <div class="flex items-center justify-between">
                             <h3 class="font-bold text-sm text-white">${escapeHtml(goal.title)}</h3>
-                            <button onclick="deleteGoal(${goal.id})" class="text-slate-500 hover:text-pink-400 text-xs">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+                            <button onclick="deleteGoal(${goal.id})" class="text-slate-500 hover:text-pink-400 text-xs"><i class="fa-solid fa-trash"></i></button>
                         </div>
-                        
-                        <!-- Progress Bar -->
                         <div class="space-y-1">
                             <div class="flex justify-between text-[11px] font-semibold text-slate-400">
                                 <span>Progression</span>
@@ -803,8 +697,6 @@
                                 <div class="bg-gradient-to-r from-pink-500 to-purple-500 h-full transition-all duration-300" style="width: ${progressPct}%"></div>
                             </div>
                         </div>
-
-                        <!-- Sub-tasks Checklist -->
                         <div class="space-y-1.5 pt-1">
                             ${goal.subtasks.map(st => `
                                 <div class="flex items-center gap-2 text-xs">
@@ -845,7 +737,6 @@
             renderCareerGoals();
         }
 
-        // --- SPEECH RECOGNITION (VOICE INPUT) ---
         function setupVoiceRecognition() {
             const micBtn = document.getElementById('mic-btn');
             const micIcon = document.getElementById('mic-icon');
@@ -854,8 +745,6 @@
             if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                 const recognition = new SpeechRecognition();
-                recognition.continuous = false;
-                recognition.interimResults = false;
 
                 micBtn.addEventListener('click', () => {
                     recognition.start();
@@ -864,137 +753,23 @@
                 });
 
                 recognition.onresult = (event) => {
-                    const transcript = event.results[0][0].transcript;
-                    taskInput.value = transcript;
+                    taskInput.value = event.results[0][0].transcript;
                     micIcon.classList.remove('fa-spinner', 'fa-spin', 'text-pink-400');
                     micIcon.classList.add('fa-microphone', 'text-amber-400');
-                    showToast('Voice Captured!', `"${transcript}"`);
                 };
 
                 recognition.onerror = () => {
                     micIcon.classList.remove('fa-spinner', 'fa-spin', 'text-pink-400');
                     micIcon.classList.add('fa-microphone', 'text-amber-400');
                 };
-            } else {
-                micBtn.disabled = true;
-                micBtn.title = 'Speech recognition not supported in this browser.';
             }
         }
 
-        // --- PRINTING LOGIC ---
         function setupPrintHandlers() {
-            document.getElementById('print-daily-btn').addEventListener('click', () => triggerPrintView('daily'));
-            document.getElementById('print-weekly-btn').addEventListener('click', () => triggerPrintView('weekly'));
+            document.getElementById('print-daily-btn').addEventListener('click', () => window.print());
+            document.getElementById('print-weekly-btn').addEventListener('click', () => window.print());
         }
 
-        function triggerPrintView(type) {
-            const printContainer = document.getElementById('printable-area');
-            const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            
-            // Filter tasks for Daily vs Weekly
-            let filteredTasks = tasks;
-            let titleRange = "Daily Task Checklist";
-            
-            if (type === 'daily') {
-                titleRange = `Daily Task Checklist — ${todayStr}`;
-                // Show pending + items logged today
-                filteredTasks = tasks.filter(t => !t.completed || new Date(t.createdAt).toDateString() === new Date().toDateString());
-            } else {
-                titleRange = `Weekly Master Planner Summary — Week of ${todayStr}`;
-                // Weekly: include all active tasks + appointments + career roadmap
-            }
-
-            printContainer.innerHTML = `
-                <div style="font-family: Arial, sans-serif; color: #0f172a;">
-                    <!-- Print Header -->
-                    <div style="border-bottom: 3px solid #8b5cf6; padding-bottom: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <h1 style="font-size: 24px; font-weight: 800; color: #4c1d95; margin: 0;">${titleRange}</h1>
-                            <p style="font-size: 12px; color: #64748b; margin-top: 4px;">Generated from Life & Career Master Planner</p>
-                        </div>
-                        <div style="text-align: right; font-size: 12px; color: #475569;">
-                            <div>Total Tasks: <strong>${filteredTasks.length}</strong></div>
-                            <div>Appointments: <strong>${appointments.length}</strong></div>
-                        </div>
-                    </div>
-
-                    <!-- Tasks List Section -->
-                    <div style="margin-bottom: 24px;">
-                        <h2 style="font-size: 15px; font-weight: 700; color: #1e293b; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px;">
-                            📋 Task List & Follow-ups
-                        </h2>
-                        ${filteredTasks.length === 0 ? '<p style="font-size: 12px; color: #94a3b8;">No tasks found.</p>' : ''}
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
-                            ${filteredTasks.map(t => `
-                                <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 8px; page-break-inside: avoid;">
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <span class="print-checkbox"></span>
-                                        <span style="font-size: 13px; ${t.completed ? 'text-decoration: line-through; color: #94a3b8;' : 'color: #1e293b; font-weight: 500;'}">
-                                            ${escapeHtml(t.title)}
-                                        </span>
-                                    </div>
-                                    <span class="print-badge" style="background: #f1f5f9; color: #334155;">
-                                        ${t.category.toUpperCase()}
-                                    </span>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    <!-- Scheduled Appointments Section -->
-                    ${appointments.length > 0 ? `
-                        <div style="margin-bottom: 24px;">
-                            <h2 style="font-size: 15px; font-weight: 700; color: #1e293b; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px;">
-                                🩺 Scheduled Meetings & Doctor Appts
-                            </h2>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                ${appointments.map(a => `
-                                    <div style="border: 1px solid #cbd5e1; border-left: 4px solid #06b6d4; padding: 8px 12px; border-radius: 8px; page-break-inside: avoid;">
-                                        <div style="font-size: 13px; font-weight: 700; color: #0f172a;">${escapeHtml(a.title)}</div>
-                                        <div style="font-size: 11px; color: #0284c7; margin-top: 2px;">
-                                            📅 ${new Date(a.time).toLocaleString([], { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    <!-- Career Roadmap Section -->
-                    ${careerGoals.length > 0 && type === 'weekly' ? `
-                        <div style="margin-bottom: 24px;">
-                            <h2 style="font-size: 15px; font-weight: 700; color: #1e293b; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px;">
-                                🎯 Career Development Milestones
-                            </h2>
-                            <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
-                                ${careerGoals.map(g => `
-                                    <div style="border: 1px solid #cbd5e1; border-left: 4px solid #ec4899; padding: 10px 14px; border-radius: 8px; page-break-inside: avoid;">
-                                        <div style="font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 6px;">${escapeHtml(g.title)}</div>
-                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                                            ${g.subtasks.map(st => `
-                                                <div style="font-size: 11px; color: #334155; display: flex; align-items: center; gap: 6px;">
-                                                    <span class="print-checkbox"></span>
-                                                    <span style="${st.done ? 'text-decoration: line-through; color: #94a3b8;' : ''}">${escapeHtml(st.text)}</span>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    <!-- Print Footer -->
-                    <div style="margin-top: 30px; border-top: 1px solid #cbd5e1; pt: 8px; text-align: center; font-size: 10px; color: #94a3b8;">
-                        Printed from Life & Career Master Planner • Stay Focused & Achieve Your Goals
-                    </div>
-                </div>
-            `;
-
-            window.print();
-        }
-
-        // --- MODALS setup ---
         function setupModals() {
             const guideModal = document.getElementById('guide-modal');
             const colorsModal = document.getElementById('colors-modal');
@@ -1007,7 +782,6 @@
             document.getElementById('close-colors-btn').addEventListener('click', () => colorsModal.classList.add('hidden'));
         }
 
-        // --- UTILS ---
         function showToast(title, message) {
             const toast = document.getElementById('toast-notification');
             document.getElementById('toast-title').innerText = title;
