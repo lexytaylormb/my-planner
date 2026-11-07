@@ -737,33 +737,84 @@
             renderCareerGoals();
         }
 
-        function setupVoiceRecognition() {
-            const micBtn = document.getElementById('mic-btn');
-            const micIcon = document.getElementById('mic-icon');
-            const taskInput = document.getElementById('quick-task-input');
+        // --- SMART NATURAL LANGUAGE VOICE PARSER ---
+    function parseVoiceCommand(text) {
+      let title = text;
+      let dateChoice = 'today';
+      let duration = 15;
 
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                const recognition = new SpeechRecognition();
+      // 1. Detect Date (Tomorrow vs Today)
+      if (/\btomorrow\b/i.test(title)) {
+        dateChoice = 'tomorrow';
+        title = title.replace(/\btomorrow\b/gi, '');
+      } else if (/\btoday\b/i.test(title)) {
+        dateChoice = 'today';
+        title = title.replace(/\btoday\b/gi, '');
+      }
 
-                micBtn.addEventListener('click', () => {
-                    recognition.start();
-                    micIcon.classList.remove('fa-microphone', 'text-amber-400');
-                    micIcon.classList.add('fa-spinner', 'fa-spin', 'text-pink-400');
-                });
+      // 2. Extract Duration (e.g., "15 minutes", "10 mins", "for 20 minutes")
+      const durationMatch = title.match(/(\d+)\s*(mins?|minutes?)/i);
+      if (durationMatch) {
+        duration = parseInt(durationMatch[1], 10);
+        title = title.replace(/for\s*\d+\s*(mins?|minutes?)/gi, '');
+        title = title.replace(/\d+\s*(mins?|minutes?)/gi, '');
+      }
 
-                recognition.onresult = (event) => {
-                    taskInput.value = event.results[0][0].transcript;
-                    micIcon.classList.remove('fa-spinner', 'fa-spin', 'text-pink-400');
-                    micIcon.classList.add('fa-microphone', 'text-amber-400');
-                };
+      // 3. Clean up action trigger words
+      title = title.replace(/^add task (for|to)?/gi, '');
+      title = title.replace(/^to\s+/gi, '');
+      title = title.replace(/\s+/g, ' ').trim();
 
-                recognition.onerror = () => {
-                    micIcon.classList.remove('fa-spinner', 'fa-spin', 'text-pink-400');
-                    micIcon.classList.add('fa-microphone', 'text-amber-400');
-                };
-            }
-        }
+      if (title.length > 0) {
+        title = title.charAt(0).toUpperCase() + title.slice(1);
+      }
+
+      return { title, dateChoice, duration };
+    }
+
+    // --- SPEECH RECOGNITION HANDLER ---
+    function setupVoiceRecognition() {
+      const micBtn = document.getElementById('mic-btn');
+      const micIcon = document.getElementById('mic-icon');
+
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        micBtn.addEventListener('click', () => {
+          recognition.start();
+          micIcon.classList.remove('fa-microphone', 'text-amber-400');
+          micIcon.classList.add('fa-spinner', 'fa-spin', 'text-pink-400');
+        });
+
+        recognition.onresult = (event) => {
+          const rawTranscript = event.results[0][0].transcript;
+          
+          // Parse natural language from spoken text
+          const parsed = parseVoiceCommand(rawTranscript);
+
+          // Auto-fill form fields
+          document.getElementById('quick-task-input').value = parsed.title;
+          document.getElementById('quick-task-date').value = parsed.dateChoice;
+          document.getElementById('quick-task-duration').value = parsed.duration;
+
+          micIcon.classList.remove('fa-spinner', 'fa-spin', 'text-pink-400');
+          micIcon.classList.add('fa-microphone', 'text-amber-400');
+
+          showToast('Voice Captured!', `"${parsed.title}" (${parsed.dateChoice}, ${parsed.duration} mins)`);
+        };
+
+        recognition.onerror = () => {
+          micIcon.classList.remove('fa-spinner', 'fa-spin', 'text-pink-400');
+          micIcon.classList.add('fa-microphone', 'text-amber-400');
+        };
+      } else {
+        micBtn.disabled = true;
+        micBtn.title = 'Speech recognition not supported in this browser.';
+      }
+    }
 
         function setupPrintHandlers() {
             document.getElementById('print-daily-btn').addEventListener('click', () => window.print());
